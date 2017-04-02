@@ -1,6 +1,7 @@
 
 PROG := main
 
+CXXFLAGS := -std=c++11 -g
 CPPFLAGS := -I./include
 
 SRCDIR := ./src
@@ -16,7 +17,7 @@ all: $(PROG)
 	$(CXX) -MM -MP -MF $@ $(CPPFLAGS) $< -MT ./$*.o -MT $@
 
 %.o: %.cpp
-	$(CXX) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 $(PROG): $(SRCS_OBJS)
 	$(CXX) $(CPPFLAGS) -o $@ $(SRCS_OBJS)
