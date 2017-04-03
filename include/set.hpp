@@ -37,15 +37,15 @@ class set_expression : public expression {
         }
     };
 
-    struct set_value_node : set_node {
+    struct value_node : set_node {
         std::string to_string();
         char_set eval();
 
         char_set set;
 
-        set_value_node() {
+        value_node() {
             type = NODE_VALUE;
-        }
+        };
     };
 };
 

@@ -18,15 +18,13 @@ static alnum_char_set alnum_set;
 expression::node *set_token_generator::get_next_token()
 {
     expression::node *new_node = nullptr;
-    set_expression::set_value_node *set_node = nullptr;
+    set_expression::value_node *set_node = nullptr;
     token_lexer::token tok;
 
     if (!lexer->get_token(&tok)) {
         printf("Lexer is empty\n");
         return nullptr;
     }
-
-    printf("TOKEN: %c\n", tok.letter);
 
     switch (tok.letter) {
     case '+':
@@ -46,8 +44,7 @@ expression::node *set_token_generator::get_next_token()
         break;
 
     case '{':
-        set_node = new set_expression::set_value_node();
-        printf("Parsing set\n");
+        set_node = new set_expression::value_node();
 
         do {
             lexer->get_token(&tok);
@@ -90,7 +87,7 @@ std::string set_expression::union_node::to_string()
         return "+";
 }
 
-std::string set_expression::set_value_node::to_string()
+std::string set_expression::value_node::to_string()
 {
     return this->set.to_string();
 }
@@ -119,7 +116,7 @@ char_set set_expression::union_node::eval()
     return left_set;
 }
 
-char_set set_expression::set_value_node::eval()
+char_set set_expression::value_node::eval()
 {
     return this->set;
 }

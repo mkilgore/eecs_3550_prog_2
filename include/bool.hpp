@@ -36,18 +36,18 @@ class bool_expression : public expression {
         };
     };
 
-    struct bool_value_node : bool_node {
+    struct value_node : bool_node {
         std::string to_string();
         bool eval();
 
         bool val;
 
-        bool_value_node() {
+        value_node() {
             type = NODE_VALUE;
             val = false;
         };
 
-        bool_value_node(bool v) {
+        value_node(bool v) {
             type = NODE_VALUE;
             val = v;
         };

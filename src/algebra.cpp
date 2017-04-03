@@ -72,7 +72,6 @@ expression::node *algebra_token_generator::get_next_token()
         return nullptr;
     }
 
-    printf("TOKEN: \"%s\"\n", new_node->to_string().c_str());
     return new_node;
 }
 

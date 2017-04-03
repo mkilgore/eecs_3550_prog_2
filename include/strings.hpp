@@ -36,13 +36,13 @@ class string_expression : public expression {
         };
     };
 
-    struct string_node_value : string_node {
+    struct value_node : string_node {
         std::string to_string();
         std::string eval(bool is_algebra);
 
         std::string str;
 
-        string_node_value() {
+        value_node() {
             type = NODE_VALUE;
             str = "";
         };

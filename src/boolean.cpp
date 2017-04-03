@@ -26,11 +26,11 @@ expression::node *bool_token_generator::get_next_token()
         break;
 
     case '1':
-        new_node = new bool_expression::bool_value_node(true);
+        new_node = new bool_expression::value_node(true);
         break;
 
     case '0':
-        new_node = new bool_expression::bool_value_node(false);
+        new_node = new bool_expression::value_node(false);
         break;
 
     case '(':
@@ -65,7 +65,7 @@ std::string bool_expression::or_node::to_string()
         return "|";
 }
 
-std::string bool_expression::bool_value_node::to_string()
+std::string bool_expression::value_node::to_string()
 {
     return (this->val)? "1": "0";
 }
@@ -86,7 +86,7 @@ bool bool_expression::or_node::eval()
     return left->eval() | right->eval();
 }
 
-bool bool_expression::bool_value_node::eval()
+bool bool_expression::value_node::eval()
 {
     return this->val;
 }

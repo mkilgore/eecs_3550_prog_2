@@ -19,7 +19,7 @@ expression::node *string_token_generator::get_next_token()
 {
     int i;
     expression::node *new_node = nullptr;
-    string_expression::string_node_value *str_node = nullptr;
+    string_expression::value_node *str_node = nullptr;
     token_lexer::token tok;
 
     if (!lexer->get_token(&tok)) {
@@ -47,7 +47,7 @@ expression::node *string_token_generator::get_next_token()
     case 'a' ... 'z':
     case 'A' ... 'Z':
     case '0' ... '9':
-        str_node = new string_expression::string_node_value();
+        str_node = new string_expression::value_node();
 
         str_node->str += tok.letter;
         lexer->get_string(&str_node->str, &alnum_set);
@@ -83,7 +83,7 @@ std::string string_expression::mult_node::to_string()
         return "*";
 }
 
-std::string string_expression::string_node_value::to_string()
+std::string string_expression::value_node::to_string()
 {
     return this->str;
 }
@@ -120,7 +120,7 @@ std::string string_expression::mult_node::eval(bool is_algebra)
     return result;
 }
 
-std::string string_expression::string_node_value::eval(bool is_algebra)
+std::string string_expression::value_node::eval(bool is_algebra)
 {
     return this->str;
 }
