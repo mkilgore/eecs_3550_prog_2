@@ -65,7 +65,7 @@ class char_set {
         return !!(this->set[index] & ((uint64_t)1 << bit));
     }
 
-    void set_union(char_set *set2)
+    void set_union(const char_set *set2)
     {
         this->set[0] |= set2->set[0];
         this->set[1] |= set2->set[1];
@@ -73,7 +73,7 @@ class char_set {
         this->set[3] |= set2->set[3];
     }
 
-    void set_intersect(char_set *set2)
+    void set_intersect(const char_set *set2)
     {
         this->set[0] &= set2->set[0];
         this->set[1] &= set2->set[1];
@@ -99,6 +99,7 @@ class char_set {
         for (i = 0; i < 256; i++) {
             int index = get_index(i);
             int bit = get_bit(i);
+
             if (this->set[index] & ((uint64_t)1 << bit)) {
                 if (!first)
                     str += ", ";

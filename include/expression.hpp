@@ -71,8 +71,4 @@ class expression {
     }
 };
 
-class algebra_expression : public expression {
-
-};
-
 #endif

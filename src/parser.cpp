@@ -10,6 +10,7 @@
 #include "strings.hpp"
 #include "bool.hpp"
 #include "set.hpp"
+#include "algebra.hpp"
 
 class alnum_char_set : public char_set {
   public:
@@ -129,6 +130,7 @@ enum expr_type {
     EXPR_BOOL,
     EXPR_STRING,
     EXPR_SET,
+    EXPR_ALGEBRA,
 };
 
 static bool parse_expression(token_lexer *lexer, std::list<expression *> *list, expr_type type)
@@ -138,7 +140,12 @@ static bool parse_expression(token_lexer *lexer, std::list<expression *> *list, 
     token_lexer::token tok;
     bool ret = true;
 
-    tok.letter = ';';
+    lexer->get_token(&tok);
+
+    if (tok.letter != '<') {
+        lexer->push_token(&tok);
+        tok.letter = ';';
+    }
 
     do {
         if (tok.letter == ';' || tok.letter == '<') {
@@ -156,6 +163,10 @@ static bool parse_expression(token_lexer *lexer, std::list<expression *> *list, 
 
             case EXPR_SET:
                 expr = new set_expression();
+                break;
+
+            case EXPR_ALGEBRA:
+                expr = new algebra_expression();
                 break;
             }
         }
@@ -201,11 +212,24 @@ static bool parse_expression(token_lexer *lexer, std::list<expression *> *list, 
                     ret = false;
                     break;
                 }
+            } else if (strcasecmp(id.c_str(), "algebra") == 0) {
+                printf("Algebra context\n");
+                if (!parse_expression(lexer, list, EXPR_ALGEBRA)) {
+                    ret = false;
+                    break;
+                }
             } else {
                 printf("Unknown expression type: \"%s\"\n", id.c_str());
                 ret = false;
                 break;
             }
+
+            lexer->get_token(&tok);
+            if (tok.letter != '<') {
+                lexer->push_token(&tok);
+                tok.letter = ';';
+            }
+            continue;
         } else {
             switch (type) {
             case EXPR_BOOL: {
@@ -224,6 +248,13 @@ static bool parse_expression(token_lexer *lexer, std::list<expression *> *list, 
                 set_token_generator set_toks(lexer);
                 parse_infix_expression(&new_node, &set_toks);
                 }
+                break;
+
+            case EXPR_ALGEBRA: {
+                algebra_token_generator algebra_toks(lexer);
+                parse_infix_expression(&new_node, &algebra_toks);
+                }
+                break;
             }
 
             if (new_node) {
