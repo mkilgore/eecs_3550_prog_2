@@ -22,7 +22,9 @@ expression::node *algebra_token_generator::get_next_token()
     algebra_expression::value_node *algebra_node = nullptr;
     algebra_expression::variable_node *var_node = nullptr;
     token_lexer::token tok;
+    int negative = 0;
 
+  parse_again:
     if (!lexer->get_token(&tok)) {
         printf("Lexer is empty\n");
         return nullptr;
@@ -34,6 +36,10 @@ expression::node *algebra_token_generator::get_next_token()
         break;
 
     case '-':
+        if (this->past_node != expression::node::node_type::NODE_VALUE) {
+            negative = 1;
+            goto parse_again;
+        }
         new_node = new algebra_expression::minus_node();
         break;
 
@@ -56,6 +62,10 @@ expression::node *algebra_token_generator::get_next_token()
     case '0' ... '9':
         algebra_node = new algebra_expression::value_node();
         algebra_node->value = tok.letter - '0';
+
+        if (negative)
+            algebra_node->value = -algebra_node->value;
+
         new_node = algebra_node;
         break;
 
@@ -72,6 +82,7 @@ expression::node *algebra_token_generator::get_next_token()
         return nullptr;
     }
 
+    this->past_node = new_node->type;
     return new_node;
 }
 

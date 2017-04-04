@@ -11,6 +11,7 @@ class token_generator {
       token_lexer *lexer;
 
   public:
+    virtual void start_new_expression() { };
     virtual expression::node *get_next_token();
     token_generator(token_lexer *l) : lexer(l) { };
 };

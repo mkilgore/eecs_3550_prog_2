@@ -41,6 +41,8 @@ bool parse_infix_expression(expression::node **root, token_generator *gen_token)
     std::stack<expression::node *> value_stack;
     expression::node *tmp;
 
+    gen_token->start_new_expression();
+
     while ((tmp = gen_token->get_next_token()) != nullptr) {
 
         switch (tmp->type) {

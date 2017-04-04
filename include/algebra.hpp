@@ -87,7 +87,11 @@ class algebra_expression : public expression {
 };
 
 class algebra_token_generator : public token_generator {
+  private:
+    expression::node::node_type past_node;
+
   public:
+    void start_new_expression() { past_node = expression::node::node_type::NODE_OP; };
     expression::node *get_next_token();
     algebra_token_generator(token_lexer *l) : token_generator(l) { };
 };
