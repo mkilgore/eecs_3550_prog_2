@@ -90,39 +90,14 @@ std::string string_expression::value_node::to_string()
 
 std::string string_expression::plus_node::eval(bool is_algebra)
 {
-    string_expression::string_node *left = static_cast<string_expression::string_node *>(this->left);
-    string_expression::string_node *right = static_cast<string_expression::string_node *>(this->right);
-
-    if (!is_algebra)
-        return left->eval(false) + right->eval(false);
-    else
-        return std::to_string(std::stoi(left->eval(true)) + std::stoi(right->eval(true)));
 }
 
 std::string string_expression::mult_node::eval(bool is_algebra)
 {
-    int i;
-    int count;
-    std::string result = "";
-    string_expression::string_node *left = static_cast<string_expression::string_node *>(this->left);
-    string_expression::string_node *right = static_cast<string_expression::string_node *>(this->right);
-
-    if (!is_algebra) {
-        std::string left_eval = left->eval(false);
-
-        count = stoi(right->eval(true));
-        for (i = 0; i < count; i++)
-            result += left_eval;
-    } else {
-        result = std::to_string(std::stoi(left->eval(true)) * std::stoi(right->eval(true)));
-    }
-
-    return result;
 }
 
 std::string string_expression::value_node::eval(bool is_algebra)
 {
-    return this->str;
 }
 
 bool string_expression::is_equal()

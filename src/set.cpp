@@ -94,31 +94,14 @@ std::string set_expression::value_node::to_string()
 
 char_set set_expression::intersect_node::eval()
 {
-    set_expression::set_node *left = static_cast<set_expression::set_node *>(this->left);
-    set_expression::set_node *right = static_cast<set_expression::set_node *>(this->right);
-    char_set left_set = left->eval();
-    char_set right_set = right->eval();
-
-    left_set.set_intersect(&right_set);
-
-    return left_set;
 }
 
 char_set set_expression::union_node::eval()
 {
-    set_expression::set_node *left = static_cast<set_expression::set_node *>(this->left);
-    set_expression::set_node *right = static_cast<set_expression::set_node *>(this->right);
-    char_set left_set = left->eval();
-    char_set right_set = right->eval();
-
-    left_set.set_union(&right_set);
-
-    return left_set;
 }
 
 char_set set_expression::value_node::eval()
 {
-    return this->set;
 }
 
 bool set_expression::is_equal()

@@ -111,47 +111,22 @@ std::string algebra_expression::power_node::to_string()
 
 int algebra_expression::plus_node::eval()
 {
-    algebra_expression::algebra_node *left  = static_cast<algebra_expression::algebra_node *>(this->left);
-    algebra_expression::algebra_node *right = static_cast<algebra_expression::algebra_node *>(this->right);
-
-    return left->eval() + right->eval();
 }
 
 int algebra_expression::minus_node::eval()
 {
-    algebra_expression::algebra_node *left  = static_cast<algebra_expression::algebra_node *>(this->left);
-    algebra_expression::algebra_node *right = static_cast<algebra_expression::algebra_node *>(this->right);
-
-    return left->eval() - right->eval();
 }
 
 int algebra_expression::mult_node::eval()
 {
-    algebra_expression::algebra_node *left  = static_cast<algebra_expression::algebra_node *>(this->left);
-    algebra_expression::algebra_node *right = static_cast<algebra_expression::algebra_node *>(this->right);
-
-    return left->eval() * right->eval();
 }
 
 int algebra_expression::power_node::eval()
 {
-    int result = 1;
-    int i, power, val;
-    algebra_expression::algebra_node *left  = static_cast<algebra_expression::algebra_node *>(this->left);
-    algebra_expression::algebra_node *right = static_cast<algebra_expression::algebra_node *>(this->right);
-
-    power = right->eval();
-    val = left->eval();
-
-    for (i = 0; i < power; i++)
-        result *= val;
-
-    return result;
 }
 
 int algebra_expression::value_node::eval()
 {
-    return this->value;
 }
 
 std::string algebra_expression::value_node::to_string()

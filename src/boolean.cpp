@@ -72,23 +72,14 @@ std::string bool_expression::value_node::to_string()
 
 bool bool_expression::and_node::eval()
 {
-    bool_expression::bool_node *left = static_cast<bool_expression::bool_node *>(this->left);
-    bool_expression::bool_node *right = static_cast<bool_expression::bool_node *>(this->right);
-
-    return left->eval() & right->eval();
 }
 
 bool bool_expression::or_node::eval()
 {
-    bool_expression::bool_node *left = static_cast<bool_expression::bool_node *>(this->left);
-    bool_expression::bool_node *right = static_cast<bool_expression::bool_node *>(this->right);
-
-    return left->eval() | right->eval();
 }
 
 bool bool_expression::value_node::eval()
 {
-    return this->val;
 }
 
 bool bool_expression::is_equal()
