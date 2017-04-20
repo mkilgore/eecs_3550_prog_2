@@ -120,6 +120,5 @@ bool bool_expression::is_equal()
     }
 
     return res;
-
 }
 

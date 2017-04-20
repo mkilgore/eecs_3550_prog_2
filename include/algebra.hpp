@@ -9,13 +9,12 @@ class algebra_expression : public expression {
     bool is_equal();
 
     struct algebra_node : node {
-        virtual bool is_value() = 0;
-        //virtual algebra_node *eval() = 0;
+        virtual int eval() = 0;
     };
 
     struct plus_node : algebra_node {
         std::string to_string();
-        bool is_value();
+        int eval();
 
         plus_node() {
             type = NODE_OP;
@@ -27,7 +26,7 @@ class algebra_expression : public expression {
 
     struct minus_node : algebra_node {
         std::string to_string();
-        bool is_value();
+        int eval();
 
         minus_node() {
             type = NODE_OP;
@@ -39,7 +38,7 @@ class algebra_expression : public expression {
 
     struct mult_node : algebra_node {
         std::string to_string();
-        bool is_value();
+        int eval();
 
         mult_node() {
             type = NODE_OP;
@@ -51,7 +50,7 @@ class algebra_expression : public expression {
 
     struct power_node : algebra_node {
         std::string to_string();
-        bool is_value();
+        int eval();
 
         power_node() {
             type = NODE_OP;
@@ -63,25 +62,13 @@ class algebra_expression : public expression {
 
     struct value_node : algebra_node {
         std::string to_string();
-        bool is_value() { return true; };
+        int eval();
 
         int value;
 
         value_node() {
             type = NODE_VALUE;
             value = 0;
-        };
-    };
-
-    struct variable_node : algebra_node {
-        std::string to_string();
-        bool is_value() { return false; };
-
-        char var;
-
-        variable_node() {
-            type = NODE_VALUE;
-            var = 0;
         };
     };
 };

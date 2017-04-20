@@ -20,7 +20,6 @@ expression::node *algebra_token_generator::get_next_token()
     int i;
     expression::node *new_node = nullptr;
     algebra_expression::value_node *algebra_node = nullptr;
-    algebra_expression::variable_node *var_node = nullptr;
     token_lexer::token tok;
     int negative = 0;
 
@@ -69,14 +68,6 @@ expression::node *algebra_token_generator::get_next_token()
         new_node = algebra_node;
         break;
 
-    case 'a' ... 'z':
-    case 'A' ... 'Z':
-        var_node = new algebra_expression::variable_node();
-        var_node->var = tok.letter;
-
-        new_node = var_node;
-        break;
-
     default:
         lexer->push_token(&tok);
         return nullptr;
@@ -118,36 +109,49 @@ std::string algebra_expression::power_node::to_string()
         return "^";
 }
 
-bool algebra_expression::plus_node::is_value()
+int algebra_expression::plus_node::eval()
 {
     algebra_expression::algebra_node *left  = static_cast<algebra_expression::algebra_node *>(this->left);
     algebra_expression::algebra_node *right = static_cast<algebra_expression::algebra_node *>(this->right);
 
-    return left->is_value() && right->is_value();
+    return left->eval() + right->eval();
 }
 
-bool algebra_expression::minus_node::is_value()
+int algebra_expression::minus_node::eval()
 {
     algebra_expression::algebra_node *left  = static_cast<algebra_expression::algebra_node *>(this->left);
     algebra_expression::algebra_node *right = static_cast<algebra_expression::algebra_node *>(this->right);
 
-    return left->is_value() && right->is_value();
+    return left->eval() - right->eval();
 }
 
-bool algebra_expression::mult_node::is_value()
+int algebra_expression::mult_node::eval()
 {
     algebra_expression::algebra_node *left  = static_cast<algebra_expression::algebra_node *>(this->left);
     algebra_expression::algebra_node *right = static_cast<algebra_expression::algebra_node *>(this->right);
 
-    return left->is_value() && right->is_value();
+    return left->eval() * right->eval();
 }
 
-bool algebra_expression::power_node::is_value()
+int algebra_expression::power_node::eval()
 {
+    int result = 1;
+    int i, power, val;
     algebra_expression::algebra_node *left  = static_cast<algebra_expression::algebra_node *>(this->left);
     algebra_expression::algebra_node *right = static_cast<algebra_expression::algebra_node *>(this->right);
 
-    return left->is_value() && right->is_value();
+    power = right->eval();
+    val = left->eval();
+
+    for (i = 0; i < power; i++)
+        result *= val;
+
+    return result;
+}
+
+int algebra_expression::value_node::eval()
+{
+    return this->value;
 }
 
 std::string algebra_expression::value_node::to_string()
@@ -155,13 +159,34 @@ std::string algebra_expression::value_node::to_string()
     return std::to_string(this->value);
 }
 
-std::string algebra_expression::variable_node::to_string()
-{
-    return std::string(1, this->var);
-}
-
 bool algebra_expression::is_equal()
 {
-    return true;
+    bool res = true;
+    int result;
+    algebra_node *node;
+    int i = 1;
+
+    if (this->nodes.empty())
+        return true;
+
+    node = static_cast<algebra_node *>(this->nodes.front());
+    result = node->eval();
+
+    printf("algebra: Eval 0: %d\n", result);
+
+    for (std::list<expression::node *>::iterator intr = ++this->nodes.begin(); intr != this->nodes.end(); ++intr) {
+        int result2;
+        node = static_cast<algebra_node *>(*intr);
+
+        result2 = node->eval();
+
+        printf("algebra: Eval %d: %d\n", i, result2);
+        if (result2 != result) {
+            res = false;
+            break;
+        }
+    }
+
+    return res;
 }
 
